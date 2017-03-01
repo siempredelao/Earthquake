@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Earthquake</string>
+
+    <string name="error_message_generic">There was an application error.</string>
+    <string name="error_message_no_internet">There is no internet connection.</string>
+    <string name="error_message_slow_internet">Slow internet connection, try again later.</string>
 </resources>
