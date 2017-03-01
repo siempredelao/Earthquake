@@ -25,6 +25,7 @@ ext {
 	supportLibraryVersion = '25.1.1'
 	retrofitVersion = '2.1.0'
 	gsonVersion = '2.8.0'
+	butterKnifeVersion = '8.5.1'
 
 	junitVersion = '4.12'
 
@@ -35,6 +36,15 @@ dependencies {
 	compile "com.android.support:appcompat-v7:$supportLibraryVersion"
 	compile "$retrofitGroup:retrofit:$retrofitVersion"
 	compile "$retrofitGroup:converter-gson:$retrofitVersion"
+	compile("com.jakewharton:butterknife:$butterKnifeVersion") {
+		exclude group: "com.android.support", module: "support-annotations"
+	}
+	annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+	compile ("com.android.support:recyclerview-v7:$supportLibraryVersion") {
+		exclude group: "com.android.support", module: "support-annotations"
+		exclude group: "com.android.support", module: "support-compat"
+		exclude group: "com.android.support", module: "support-core-ui"
+	}
 
 	testCompile "junit:junit:$junitVersion"
 
