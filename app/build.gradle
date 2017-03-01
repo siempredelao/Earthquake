@@ -21,11 +21,13 @@ android {
 
 ext {
 	retrofitGroup = 'com.squareup.retrofit2'
+	daggerGroup = 'com.google.dagger'
 
 	supportLibraryVersion = '25.1.1'
 	retrofitVersion = '2.1.0'
 	gsonVersion = '2.8.0'
 	butterKnifeVersion = '8.5.1'
+	daggerVersion = '2.8'
 
 	junitVersion = '4.12'
 
@@ -45,6 +47,8 @@ dependencies {
 		exclude group: "com.android.support", module: "support-compat"
 		exclude group: "com.android.support", module: "support-core-ui"
 	}
+	compile "$daggerGroup:dagger:$daggerVersion"
+	annotationProcessor "$daggerGroup:dagger-compiler:$daggerVersion"
 
 	testCompile "junit:junit:$junitVersion"
 
