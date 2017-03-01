@@ -4,6 +4,6 @@ import com.futurice.earthquake.data.model.GetEarthquakesResponseEntity;
 
 public interface Repository {
 
-    GetEarthquakesResponseEntity getEarthquakes(Callback<GetEarthquakesResponseEntity> callback);
+    void getEarthquakes(Callback<GetEarthquakesResponseEntity> callback);
 
 }

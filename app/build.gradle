@@ -19,11 +19,26 @@ android {
 	}
 }
 
+ext {
+	retrofitGroup = 'com.squareup.retrofit2'
+
+	supportLibraryVersion = '25.1.1'
+	retrofitVersion = '2.1.0'
+	gsonVersion = '2.8.0'
+
+	junitVersion = '4.12'
+
+	espressoVersion = '2.2.2'
+}
+
 dependencies {
-	compile fileTree(dir: 'libs', include: ['*.jar'])
-	androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+	compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+	compile "$retrofitGroup:retrofit:$retrofitVersion"
+	compile "$retrofitGroup:converter-gson:$retrofitVersion"
+
+	testCompile "junit:junit:$junitVersion"
+
+	androidTestCompile("com.android.support.test.espresso:espresso-core:$espressoVersion", {
 		exclude group: 'com.android.support', module: 'support-annotations'
 	})
-	compile 'com.android.support:appcompat-v7:25.1.1'
-	testCompile 'junit:junit:4.12'
 }
