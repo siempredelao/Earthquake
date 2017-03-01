@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements GetEarthquakesMVP
     @Override
     public void showList(final List<Earthquake> earthquakeList) {
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        final EarthquakeListAdapter adapter = new EarthquakeListAdapter();
+        final EarthquakeListAdapter adapter = new EarthquakeListAdapter(getEarthquakesPresenter);
         recyclerview.setAdapter(adapter);
         recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter.addAll(earthquakeList);
@@ -88,6 +88,11 @@ public class MainActivity extends AppCompatActivity implements GetEarthquakesMVP
     @Override
     public void showGenericError() {
         showError(R.string.error_message_generic);
+    }
+
+    @Override
+    public void showEarthquakeById(final String earthquakeId) {
+        startActivity(EarthquakeActivity.createIntent(this, earthquakeId));
     }
 
     private void showError(@StringRes int stringResourceId) {

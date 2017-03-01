@@ -57,4 +57,9 @@ public class GetEarthquakesPresenter implements GetEarthquakesMVP.Presenter {
     public void stop() {
         getEarthquakesUseCase.release();
     }
+
+    @Override
+    public void onItemClick(final String id) {
+        view.showEarthquakeById(id);
+    }
 }

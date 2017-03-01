@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.futurice.earthquake.domain.model.Earthquake;
+import com.futurice.earthquake.presentation.getearthquakes.GetEarthquakesPresenter;
 
 import java.util.Locale;
 
@@ -23,9 +24,14 @@ class EarthquakeViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.earthquake_list_item_view_timestamp_textview)
     protected TextView tvTimestamp;
 
-    EarthquakeViewHolder(View itemView) {
+    private final GetEarthquakesPresenter presenter;
+
+    EarthquakeViewHolder(View itemView, final GetEarthquakesPresenter getEarthquakesPresenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+
+        this.presenter = getEarthquakesPresenter;
+
     }
 
     void bind(final Earthquake earthquake) {
@@ -36,6 +42,12 @@ class EarthquakeViewHolder extends RecyclerView.ViewHolder {
                                           earthquake.getMagnitudeType()));
         tvTimestamp.setText(DateUtils.getRelativeTimeSpanString(earthquake.getTimestamp()));
         invalidateBackground(earthquake.getAlert());
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onItemClick(earthquake.getId());
+            }
+        });
     }
 
     private void invalidateBackground(final String alert) {

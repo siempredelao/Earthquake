@@ -12,6 +12,8 @@ public interface GetEarthquakesMVP {
         void start();
 
         void stop();
+
+        void onItemClick(String earthquakeId);
     }
 
     interface View {
@@ -26,6 +28,8 @@ public interface GetEarthquakesMVP {
         void showSlowInternetError();
 
         void showGenericError();
+
+        void showEarthquakeById(String earthquakeId);
     }
 
 }

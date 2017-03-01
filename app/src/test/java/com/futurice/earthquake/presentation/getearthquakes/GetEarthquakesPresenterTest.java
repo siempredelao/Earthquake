@@ -122,4 +122,13 @@ public class GetEarthquakesPresenterTest {
 
         verify(getEarthquakesInteractor).release();
     }
+
+    @Test
+    public void showsDetailsOnItemClick() {
+        final String fakeEarthquakeId = "12345";
+
+        presenter.onItemClick(fakeEarthquakeId);
+
+        verify(view).showEarthquakeById(fakeEarthquakeId);
+    }
 }
