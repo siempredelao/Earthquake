@@ -30,6 +30,7 @@ ext {
 	daggerVersion = '2.8'
 
 	junitVersion = '4.12'
+	mockitoVersion = '2.3.0'
 
 	espressoVersion = '2.2.2'
 }
@@ -51,6 +52,7 @@ dependencies {
 	annotationProcessor "$daggerGroup:dagger-compiler:$daggerVersion"
 
 	testCompile "junit:junit:$junitVersion"
+	testCompile "org.mockito:mockito-core:$mockitoVersion"
 
 	androidTestCompile("com.android.support.test.espresso:espresso-core:$espressoVersion", {
 		exclude group: 'com.android.support', module: 'support-annotations'
