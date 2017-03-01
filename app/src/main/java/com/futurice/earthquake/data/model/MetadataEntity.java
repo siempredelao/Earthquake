@@ -9,4 +9,7 @@ public class MetadataEntity {
     private String  api;
     private Integer count;
 
+    public Long getGenerated() {
+        return generated;
+    }
 }

@@ -4,7 +4,7 @@ import com.futurice.earthquake.data.model.GetEarthquakesResponseEntity;
 
 import retrofit2.Response;
 
-public class NetworkDataSource implements Repository {
+public class NetworkDataSource {
 
     private final EarthquakeApiService earthquakeApiService;
 
@@ -12,8 +12,7 @@ public class NetworkDataSource implements Repository {
         this.earthquakeApiService = earthquakeApiService;
     }
 
-    @Override
-    public void getEarthquakes(final Callback<GetEarthquakesResponseEntity> callback) {
+    void getEarthquakes(final Callback<GetEarthquakesResponseEntity> callback) {
         try {
             final Response<GetEarthquakesResponseEntity> response = earthquakeApiService.getTodayEarthquakes()
                                                                                         .execute();

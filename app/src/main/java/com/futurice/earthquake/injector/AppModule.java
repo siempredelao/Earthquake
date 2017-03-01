@@ -3,8 +3,10 @@ package com.futurice.earthquake.injector;
 import android.content.Context;
 
 import com.futurice.earthquake.data.repository.EarthquakeApiService;
+import com.futurice.earthquake.data.repository.MemoryDataSource;
 import com.futurice.earthquake.data.repository.NetworkDataSource;
 import com.futurice.earthquake.data.repository.Repository;
+import com.futurice.earthquake.data.repository.RepositoryProxy;
 import com.futurice.earthquake.domain.executor.Executor;
 import com.futurice.earthquake.domain.executor.MainThread;
 import com.futurice.earthquake.domain.executor.MainThreadBase;
@@ -36,8 +38,20 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Repository provideRepository(EarthquakeApiService earthquakeApiService) {
+    MemoryDataSource provideMemoryDataSource() {
+        return new MemoryDataSource();
+    }
+
+    @Provides
+    @Singleton
+    NetworkDataSource provideNetworkDataSource(EarthquakeApiService earthquakeApiService) {
         return new NetworkDataSource(earthquakeApiService);
+    }
+
+    @Provides
+    @Singleton
+    Repository provideRepository(MemoryDataSource memoryDataSource, NetworkDataSource networkDataSource) {
+        return new RepositoryProxy(memoryDataSource, networkDataSource);
     }
 
     @Provides

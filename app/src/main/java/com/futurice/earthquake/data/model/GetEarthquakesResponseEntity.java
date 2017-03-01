@@ -16,6 +16,10 @@ public class GetEarthquakesResponseEntity {
         bbox = builder.bbox;
     }
 
+    public MetadataEntity getMetadata() {
+        return metadata;
+    }
+
     public List<FeatureEntity> getFeatures() {
         return features;
     }
