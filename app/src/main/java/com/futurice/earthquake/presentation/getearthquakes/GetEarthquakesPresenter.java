@@ -36,6 +36,8 @@ public class GetEarthquakesPresenter implements GetEarthquakesMVP.Presenter {
             @Override
             public void onLoad(final List<Earthquake> earthquakeList) {
                 view.hideLoading();
+                // Here we should map Earthquake (domain layer) to EarthquakeModel (presentation layer),
+                // so we only use that fields we are interested in
                 view.showList(earthquakeList);
             }
 

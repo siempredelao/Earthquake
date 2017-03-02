@@ -33,6 +33,8 @@ public class GetEarthquakeByIdPresenter implements GetEarthquakeByIdMVP.Presente
 
             @Override
             public void onLoad(final Earthquake earthquake) {
+                // Here we should map Earthquake (domain layer) to EarthquakeModel (presentation layer),
+                // so we only use that fields we are interested in
                 GetEarthquakeByIdPresenter.this.earthquake = earthquake;
                 view.hideLoading();
                 view.showEarthquake(earthquake);
