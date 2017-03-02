@@ -2,8 +2,11 @@ package com.futurice.earthquake;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -14,6 +17,8 @@ import com.futurice.earthquake.domain.model.Earthquake;
 import com.futurice.earthquake.injector.DaggerActivityComponent;
 import com.futurice.earthquake.presentation.getearthquakebyid.GetEarthquakeByIdMVP;
 import com.futurice.earthquake.presentation.getearthquakebyid.GetEarthquakeByIdPresenter;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -62,6 +67,26 @@ public class EarthquakeActivity extends AppCompatActivity implements GetEarthqua
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.details_menu_browser_action:
+                getEarthquakeByIdPresenter.openDetails();
+                return true;
+            case R.id.details_menu_location_action:
+                getEarthquakeByIdPresenter.openLocation();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -102,6 +127,24 @@ public class EarthquakeActivity extends AppCompatActivity implements GetEarthqua
     public void showGenericError() {
         Toast.makeText(this, R.string.error_message_generic, Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    @Override
+    public void showDetails(final String url) {
+        final Intent openBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(openBrowserIntent);
+    }
+
+    @Override
+    public void showLocation(final Float latitude, final Float longitude, final String place) {
+        final Uri openMapsIntentUri = Uri.parse(String.format(Locale.getDefault(),
+                                                              "geo:0,0?q=%f,%f(%s)",
+                                                              latitude,
+                                                              longitude,
+                                                              place));
+        final Intent openMapIntent = new Intent(Intent.ACTION_VIEW, openMapsIntentUri);
+        startActivity(openMapIntent);
+
     }
 
     public static Intent createIntent(final Context context, final String earthquakeId) {

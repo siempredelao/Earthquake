@@ -106,4 +106,47 @@ public class GetEarthquakeByIdPresenterTest {
         verify(getEarthquakeByIdInteractor).release();
     }
 
+    @Test
+    public void showEarthquakeDetailsOnOpenDetails() {
+        String fakeEarthquakeId = "1234abcd";
+        String fakeUrl = "http://futurice.test.de";
+        final Earthquake earthquake = new Earthquake.Builder().withUrl(fakeUrl).build();
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                ((GetEarthquakeByIdCallback) invocation.getArguments()[1]).onLoad(earthquake);
+                return null;
+            }
+        }).when(getEarthquakeByIdInteractor).execute(eq(fakeEarthquakeId), any(GetEarthquakeByIdCallback.class));
+        presenter.start(fakeEarthquakeId);
+
+        presenter.openDetails();
+
+        verify(view).showDetails(fakeUrl);
+    }
+
+    @Test
+    public void showLocationOnOpenLocation() {
+        String fakeEarthquakeId = "1234abcd";
+        Float fakeLatitude = 1F;
+        Float fakeLongitude = 2F;
+        String fakePlace = "wonderland";
+        final Earthquake earthquake = new Earthquake.Builder().withLatitude(fakeLatitude)
+                                                              .withLongitude(fakeLongitude)
+                                                              .withPlace(fakePlace)
+                                                              .build();
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                ((GetEarthquakeByIdCallback) invocation.getArguments()[1]).onLoad(earthquake);
+                return null;
+            }
+        }).when(getEarthquakeByIdInteractor).execute(eq(fakeEarthquakeId), any(GetEarthquakeByIdCallback.class));
+        presenter.start(fakeEarthquakeId);
+
+        presenter.openLocation();
+
+        verify(view).showLocation(fakeLatitude, fakeLongitude, fakePlace);
+    }
+
 }

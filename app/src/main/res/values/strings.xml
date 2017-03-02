@@ -16,4 +16,6 @@
     <string name="earthquake_magnitude_not_available_message">Magnitude not available</string>
     <string name="earthquake_location_message" formatted="false">Location: (%f, %f)</string>
     <string name="earthquake_depth_message">Depth %.2fkm</string>
+    <string name="menu_details_show_in_browser_title">Show in browser</string>
+    <string name="menu_details_open_location_title">Open location</string>
 </resources>

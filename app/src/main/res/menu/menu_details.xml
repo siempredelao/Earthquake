@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/details_menu_browser_action"
+        android:icon="@drawable/ic_open_in_browser_white_24dp"
+        android:title="@string/menu_details_show_in_browser_title"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/details_menu_location_action"
+        android:icon="@drawable/ic_location_on_white_24dp"
+        android:title="@string/menu_details_open_location_title"
+        app:showAsAction="ifRoom"/>
+
+</menu>

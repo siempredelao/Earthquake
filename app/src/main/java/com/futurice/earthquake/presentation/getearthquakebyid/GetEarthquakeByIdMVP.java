@@ -10,6 +10,10 @@ public interface GetEarthquakeByIdMVP {
         void start(String id);
 
         void stop();
+
+        void openDetails();
+
+        void openLocation();
     }
 
     interface View {
@@ -22,6 +26,10 @@ public interface GetEarthquakeByIdMVP {
         void showEarthquakeNotFoundError();
 
         void showGenericError();
+
+        void showDetails(String url);
+
+        void showLocation(Float latitude, Float longitude, String place);
     }
 
 }

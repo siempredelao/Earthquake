@@ -13,6 +13,7 @@ public class GetEarthquakeByIdPresenter implements GetEarthquakeByIdMVP.Presente
     private final GetEarthquakeByIdUseCase getEarthquakeByIdUseCase;
 
     private GetEarthquakeByIdMVP.View view;
+    private Earthquake earthquake;
 
     @Inject
     GetEarthquakeByIdPresenter(final GetEarthquakeByIdInteractor getEarthquakeByIdInteractor) {
@@ -29,8 +30,10 @@ public class GetEarthquakeByIdPresenter implements GetEarthquakeByIdMVP.Presente
         view.showLoading();
 
         getEarthquakeByIdUseCase.execute(id, new GetEarthquakeByIdUseCase.GetEarthquakeByIdCallback() {
+
             @Override
             public void onLoad(final Earthquake earthquake) {
+                GetEarthquakeByIdPresenter.this.earthquake = earthquake;
                 view.hideLoading();
                 view.showEarthquake(earthquake);
             }
@@ -53,5 +56,15 @@ public class GetEarthquakeByIdPresenter implements GetEarthquakeByIdMVP.Presente
     @Override
     public void stop() {
         getEarthquakeByIdUseCase.release();
+    }
+
+    @Override
+    public void openDetails() {
+        view.showDetails(earthquake.getUrl());
+    }
+
+    @Override
+    public void openLocation() {
+        view.showLocation(earthquake.getLatitude(), earthquake.getLongitude(), earthquake.getPlace());
     }
 }
