@@ -36,8 +36,36 @@ public class DomainMapperTest {
     }
 
     @Test
-    public void appliesTransformation() {
+    public void listHasSameSizeAfterMapping() {
         ArrayList<FeatureEntity> featureList = new ArrayList<>();
+        FeatureEntity featureEntity = getFeatureEntity();
+        featureList.add(featureEntity);
+        GetEarthquakesResponseEntity getEarthquakesResponseEntity = new GetEarthquakesResponseEntity.Builder().withFeatures(
+                featureList).build();
+
+        List<Earthquake> transformation = domainMapper.transform(getEarthquakesResponseEntity);
+
+        assertEquals(featureList.size(), transformation.size());
+    }
+
+    @Test
+    public void appliesTransformation() {
+        FeatureEntity featureEntity = getFeatureEntity();
+
+        Earthquake transformation = domainMapper.transform(featureEntity);
+
+        assertEquals(featureEntity.getId(), transformation.getId());
+        assertEquals(featureEntity.getGeometry().getLatitude(), transformation.getLatitude());
+        assertEquals(featureEntity.getGeometry().getLongitude(), transformation.getLongitude());
+        assertEquals(featureEntity.getGeometry().getDepth(), transformation.getDepth());
+        assertEquals(featureEntity.getProperties().getMagnitude(), transformation.getMagnitude());
+        assertEquals(featureEntity.getProperties().getMagnitudeType(), transformation.getMagnitudeType());
+        assertEquals(featureEntity.getProperties().getPlace(), transformation.getPlace());
+        assertEquals(featureEntity.getProperties().getUrl(), transformation.getUrl());
+        assertEquals(featureEntity.getProperties().getAlert(), transformation.getAlert());
+    }
+
+    private FeatureEntity getFeatureEntity() {
         String fakeId = "abcd1234";
         List<Float> coordinates = Arrays.asList(1F, 2F, 3F);
         GeometryEntity fakeGeometry = new GeometryEntity.Builder().withCoordinates(coordinates).build();
@@ -54,26 +82,9 @@ public class DomainMapperTest {
                                                                         .withUrl(fakeUrl)
                                                                         .withAlert(fakeAlert)
                                                                         .build();
-        FeatureEntity featureEntity = new FeatureEntity.Builder().withId(fakeId)
-                                                                 .withGeometry(fakeGeometry)
-                                                                 .withProperties(fakeProperties)
-                                                                 .build();
-        featureList.add(featureEntity);
-        GetEarthquakesResponseEntity getEarthquakesResponseEntity = new GetEarthquakesResponseEntity.Builder().withFeatures(
-                featureList).build();
-
-        List<Earthquake> transformation = domainMapper.transform(getEarthquakesResponseEntity);
-
-        assertEquals(featureList.size(), transformation.size());
-        final Earthquake earthquake = transformation.get(0);
-        assertEquals(featureEntity.getId(), earthquake.getId());
-        assertEquals(featureEntity.getGeometry().getLatitude(), earthquake.getLatitude());
-        assertEquals(featureEntity.getGeometry().getLongitude(), earthquake.getLongitude());
-        assertEquals(featureEntity.getGeometry().getDepth(), earthquake.getDepth());
-        assertEquals(featureEntity.getProperties().getMagnitude(), earthquake.getMagnitude());
-        assertEquals(featureEntity.getProperties().getMagnitudeType(), earthquake.getMagnitudeType());
-        assertEquals(featureEntity.getProperties().getPlace(), earthquake.getPlace());
-        assertEquals(featureEntity.getProperties().getUrl(), earthquake.getUrl());
-        assertEquals(featureEntity.getProperties().getAlert(), earthquake.getAlert());
+        return new FeatureEntity.Builder().withId(fakeId)
+                                          .withGeometry(fakeGeometry)
+                                          .withProperties(fakeProperties)
+                                          .build();
     }
 }

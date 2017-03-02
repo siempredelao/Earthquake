@@ -21,22 +21,25 @@ public class DomainMapper {
     public List<Earthquake> transform(final GetEarthquakesResponseEntity getEarthquakesResponseEntity) {
         final List<Earthquake> earthquakeList = new ArrayList<>();
         for (final FeatureEntity featureEntity : getEarthquakesResponseEntity.getFeatures()) {
-            final GeometryEntity geometry = featureEntity.getGeometry();
-            final PropertiesEntity properties = featureEntity.getProperties();
-
-            final Earthquake earthquake = new Earthquake.Builder().withId(featureEntity.getId())
-                                                                  .withLatitude(geometry.getLatitude())
-                                                                  .withLongitude(geometry.getLongitude())
-                                                                  .withDepth(geometry.getDepth())
-                                                                  .withTimestamp(properties.getTime())
-                                                                  .withMagnitude(properties.getMagnitude())
-                                                                  .withMagnitudeType(properties.getMagnitudeType())
-                                                                  .withPlace(properties.getPlace())
-                                                                  .withUrl(properties.getUrl())
-                                                                  .withAlert(properties.getAlert())
-                                                                  .build();
-            earthquakeList.add(earthquake);
+            earthquakeList.add(transform(featureEntity));
         }
         return earthquakeList;
+    }
+
+    public Earthquake transform(final FeatureEntity featureEntity) {
+        final GeometryEntity geometry = featureEntity.getGeometry();
+        final PropertiesEntity properties = featureEntity.getProperties();
+
+        return new Earthquake.Builder().withId(featureEntity.getId())
+                                       .withLatitude(geometry.getLatitude())
+                                       .withLongitude(geometry.getLongitude())
+                                       .withDepth(geometry.getDepth())
+                                       .withTimestamp(properties.getTime())
+                                       .withMagnitude(properties.getMagnitude())
+                                       .withMagnitudeType(properties.getMagnitudeType())
+                                       .withPlace(properties.getPlace())
+                                       .withUrl(properties.getUrl())
+                                       .withAlert(properties.getAlert())
+                                       .build();
     }
 }
