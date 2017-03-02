@@ -1,5 +1,6 @@
 package com.futurice.earthquake.data.repository;
 
+import com.futurice.earthquake.data.model.FeatureEntity;
 import com.futurice.earthquake.data.model.GetEarthquakesResponseEntity;
 
 public class MemoryDataSource {
@@ -20,5 +21,9 @@ public class MemoryDataSource {
 
     void persist(final GetEarthquakesResponseEntity getEarthquakesResponseEntity) {
         earthquakeCache.put(getEarthquakesResponseEntity);
+    }
+
+    public FeatureEntity getEarthquakeById(final String id) {
+        return earthquakeCache.getById(id);
     }
 }

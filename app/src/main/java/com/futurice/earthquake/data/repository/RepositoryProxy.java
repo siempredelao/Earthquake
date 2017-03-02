@@ -1,5 +1,6 @@
 package com.futurice.earthquake.data.repository;
 
+import com.futurice.earthquake.data.model.FeatureEntity;
 import com.futurice.earthquake.data.model.GetEarthquakesResponseEntity;
 
 public class RepositoryProxy implements Repository {
@@ -29,6 +30,16 @@ public class RepositoryProxy implements Repository {
                     callback.onFailure(throwable);
                 }
             });
+        }
+    }
+
+    @Override
+    public void getEarthquakeById(final String id, final Callback<FeatureEntity> callback) {
+        if (!memoryDataSource.isDirty()) {
+            callback.onSuccess(memoryDataSource.getEarthquakeById(id));
+        } else {
+            // Fetch earthquake from server, out of scope of this coding challenge
+            callback.onFailure(new Exception());
         }
     }
 }

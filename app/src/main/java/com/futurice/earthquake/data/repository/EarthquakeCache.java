@@ -1,5 +1,6 @@
 package com.futurice.earthquake.data.repository;
 
+import com.futurice.earthquake.data.model.FeatureEntity;
 import com.futurice.earthquake.data.model.GetEarthquakesResponseEntity;
 
 class EarthquakeCache {
@@ -24,5 +25,14 @@ class EarthquakeCache {
 
     GetEarthquakesResponseEntity get() {
         return getEarthquakesResponseEntity;
+    }
+
+    FeatureEntity getById(final String id) {
+        for (final FeatureEntity featureEntity : getEarthquakesResponseEntity.getFeatures()) {
+            if (featureEntity.getId().equals(id)) {
+                return featureEntity;
+            }
+        }
+        return null;
     }
 }

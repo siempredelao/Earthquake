@@ -1,5 +1,6 @@
 package com.futurice.earthquake.data.repository;
 
+import com.futurice.earthquake.data.model.FeatureEntity;
 import com.futurice.earthquake.data.model.GetEarthquakesResponseEntity;
 
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.mockito.stubbing.Answer;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -20,8 +22,6 @@ public class RepositoryProxyTest {
     MemoryDataSource                       memoryDataSource;
     @Mock
     NetworkDataSource                      networkDataSource;
-    @Mock
-    Callback<GetEarthquakesResponseEntity> callback;
 
     RepositoryProxy repositoryProxy;
 
@@ -34,6 +34,7 @@ public class RepositoryProxyTest {
 
     @Test
     public void returnsCachedDataWhenCacheIsValid() {
+        Callback<GetEarthquakesResponseEntity> callback = mock(Callback.class);
         GetEarthquakesResponseEntity getEarthquakesResponseEntity = new GetEarthquakesResponseEntity.Builder().build();
         when(memoryDataSource.isDirty()).thenReturn(false);
         when(memoryDataSource.getEarthquakes()).thenReturn(getEarthquakesResponseEntity);
@@ -45,6 +46,7 @@ public class RepositoryProxyTest {
 
     @Test
     public void returnsNetworkDataWhenCacheIsDirty() {
+        Callback<GetEarthquakesResponseEntity> callback = mock(Callback.class);
         when(memoryDataSource.isDirty()).thenReturn(true);
 
         repositoryProxy.getEarthquakes(callback);
@@ -54,6 +56,7 @@ public class RepositoryProxyTest {
 
     @Test
     public void savesNetworkDataIntoCacheOnNetworkSuccess() {
+        Callback<GetEarthquakesResponseEntity> callback = mock(Callback.class);
         final GetEarthquakesResponseEntity getEarthquakesResponseEntity = new GetEarthquakesResponseEntity.Builder().build();
         when(memoryDataSource.isDirty()).thenReturn(true);
         doAnswer(new Answer() {
@@ -74,6 +77,7 @@ public class RepositoryProxyTest {
 
     @Test
     public void returnsFailureOnNetworkFailure() {
+        Callback<GetEarthquakesResponseEntity> callback = mock(Callback.class);
         final Throwable fakeThrowable = new Throwable();
         when(memoryDataSource.isDirty()).thenReturn(true);
         doAnswer(new Answer() {
@@ -89,4 +93,16 @@ public class RepositoryProxyTest {
         verify(callback).onFailure(fakeThrowable);
     }
 
+    @Test
+    public void takesCachedEarthquakeWhenCacheIsValid() {
+        Callback<FeatureEntity> callback = mock(Callback.class);
+        String fakeId = "1234abcd";
+        FeatureEntity featureEntity = new FeatureEntity.Builder().build();
+        when(memoryDataSource.isDirty()).thenReturn(false);
+        when(memoryDataSource.getEarthquakeById(fakeId)).thenReturn(featureEntity);
+
+        repositoryProxy.getEarthquakeById(fakeId, callback);
+
+        verify(callback).onSuccess(featureEntity);
+    }
 }
