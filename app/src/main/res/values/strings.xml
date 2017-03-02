@@ -4,4 +4,16 @@
     <string name="error_message_generic">There was an application error.</string>
     <string name="error_message_no_internet">There is no internet connection.</string>
     <string name="error_message_slow_internet">Slow internet connection, try again later.</string>
+    <string name="error_message_earthquake_not_found">Unable to find earthquake.</string>
+
+    <string name="alert_none_message">No alert</string>
+    <string name="alert_green_message">Green alert</string>
+    <string name="alert_yellow_message">Yellow alert</string>
+    <string name="alert_orange_message">Orange alert</string>
+    <string name="alert_red_message">Red alert</string>
+
+    <string name="earthquake_magnitude_message" formatted="false">Magnitude %.2f %s</string>
+    <string name="earthquake_magnitude_not_available_message">Magnitude not available</string>
+    <string name="earthquake_location_message" formatted="false">Location: (%f, %f)</string>
+    <string name="earthquake_depth_message">Depth %.2fkm</string>
 </resources>

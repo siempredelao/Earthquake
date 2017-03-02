@@ -1,5 +1,6 @@
 package com.futurice.earthquake.injector;
 
+import com.futurice.earthquake.EarthquakeActivity;
 import com.futurice.earthquake.MainActivity;
 
 import dagger.Component;
@@ -9,4 +10,5 @@ import dagger.Component;
 public interface ActivityComponent {
 
     void inject(MainActivity mainActivity);
+    void inject(EarthquakeActivity earthquakeActivity);
 }
