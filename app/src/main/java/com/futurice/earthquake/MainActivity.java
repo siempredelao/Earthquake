@@ -2,12 +2,11 @@ package com.futurice.earthquake;
 
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.futurice.earthquake.domain.model.Earthquake;
@@ -22,15 +21,16 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements GetEarthquakesMVP.View {
+public class MainActivity extends AppCompatActivity
+        implements GetEarthquakesMVP.View, SwipeRefreshLayout.OnRefreshListener {
 
     @Inject
     GetEarthquakesPresenter getEarthquakesPresenter;
 
     @BindView(R.id.main_activity_recyclerview)
-    protected RecyclerView recyclerview;
+    protected RecyclerView       recyclerview;
     @BindView(R.id.main_activity_progressbar)
-    protected ProgressBar  progressbar;
+    protected SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements GetEarthquakesMVP
 
         getEarthquakesPresenter.setView(this);
         getEarthquakesPresenter.start();
+
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -55,24 +57,29 @@ public class MainActivity extends AppCompatActivity implements GetEarthquakesMVP
     }
 
     @Override
+    public void onRefresh() {
+        getEarthquakesPresenter.start();
+    }
+
+    @Override
     public void showLoading() {
-        progressbar.setVisibility(View.VISIBLE);
-        recyclerview.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void hideLoading() {
-        progressbar.setVisibility(View.GONE);
-        recyclerview.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void showList(final List<Earthquake> earthquakeList) {
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        final EarthquakeListAdapter adapter = new EarthquakeListAdapter(getEarthquakesPresenter);
-        recyclerview.setAdapter(adapter);
-        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        adapter.addAll(earthquakeList);
+        if (recyclerview.getAdapter() == null) {
+            recyclerview.setLayoutManager(new LinearLayoutManager(this));
+            final EarthquakeListAdapter adapter = new EarthquakeListAdapter(getEarthquakesPresenter);
+            recyclerview.setAdapter(adapter);
+            recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        }
+        ((EarthquakeListAdapter) recyclerview.getAdapter()).addAll(earthquakeList);
     }
 
     @Override
